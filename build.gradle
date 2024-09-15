@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+group 'ru.clevertec'
+version '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_21
+}
+jacocoTestReport {
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+
+compileJava {
+    options.compilerArgs << '-parameters'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.3.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '3.3.0'
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
